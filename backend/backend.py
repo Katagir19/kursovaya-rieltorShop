@@ -90,3 +90,30 @@ def create_tenant(tenant: TenantCreate):
         return {"message": "Жилец успешно добавлен", "id": new_id}
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
+
+# Эндпоинт: Удалить жильца по ID из БД
+@app.delete("/api/tenants/{tenant_id}")
+def delete_tenant(tenant_id: int):
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        
+        # Проверяем, существует ли жилец с таким ID
+        cursor.execute("SELECT id FROM tenants WHERE id = %s", (tenant_id,))
+        tenant = cursor.fetchone()
+        
+        if not tenant:
+            cursor.close()
+            conn.close()
+            raise HTTPException(status_code=404, detail="Жилец не найден в базе данных")
+            
+        # Удаляем запись из MySQL
+        cursor.execute("DELETE FROM tenants WHERE id = %s", (tenant_id,))
+        conn.commit()
+        
+        cursor.close()
+        conn.close()
+        
+        return {"message": "Жилец успешно удален", "id": tenant_id}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
