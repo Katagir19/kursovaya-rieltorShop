@@ -96,3 +96,23 @@ export const Notes = styled.p`
   font-style: italic;
   color: ${theme.colors.textSecondary};
 `;
+
+export const DeleteBtn = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  color: #1a1a1a;
+  flex-shrink: 0;
+  margin-left: 8px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    display: block;
+  }
+
+  &:hover path {
+    color: red;
+  }
+`;
