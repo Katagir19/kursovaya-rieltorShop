@@ -46,3 +46,35 @@ export const IconSettings = (props) => (
     />
   </svg>
 );
+
+export const IconPhone = (props) => (
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" {...props}>
+    <path
+      d="M5.2 3.3c.5-.3 1.1-.2 1.4.3l1.2 2c.3.4.2 1-.2 1.4l-1 .9c.6 1.4 1.7 2.5 3.1 3.1l.9-1c.4-.4 1-.5 1.4-.2l2 1.2c.5.3.6.9.3 1.4l-.9 1.4c-.3.5-.9.7-1.4.6-4-.9-7.2-4.1-8.1-8.1-.1-.5.1-1.1.6-1.4l1.4-.9Z"
+      strokeLinejoin="round"
+      strokeLinecap="round"
+    />
+  </svg>
+);
+
+export const IconMail = (props) => (
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" {...props}>
+    <rect x="2.5" y="4.5" width="15" height="11" rx="1" />
+    <path d="m3 5.3 7 5 7-5" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+export const IconWallet = (props) => (
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" {...props}>
+    <path d="M3 6.2c0-1 .8-1.7 1.7-1.7h9.6c1 0 1.7.8 1.7 1.7v8c0 1-.8 1.7-1.7 1.7H4.7c-1 0-1.7-.8-1.7-1.7v-8Z" />
+    <path d="M13 10h2.6" strokeLinecap="round" />
+    <path d="M3 8h14" />
+  </svg>
+);
+
+export const IconCalendar = (props) => (
+  <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.5" {...props}>
+    <rect x="3" y="4" width="14" height="13" rx="1" />
+    <path d="M3 7.5h14M6.5 2.5v3M13.5 2.5v3" strokeLinecap="round" />
+  </svg>
+);

@@ -6,3 +6,9 @@ export const Wrapper = styled.div`
   flex-direction: column;
   gap: 20px;
 `;
+
+export const List = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(480px, 1fr));
+  gap: 16px;
+`;

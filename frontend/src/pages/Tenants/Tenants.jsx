@@ -1,5 +1,8 @@
 import { useTenants } from '../../shared/modules/useTenant/useTenants';
-import { Wrapper } from './style';
+import { TenantCard } from './TenantCard/TenantCard';
+import { EmptyState } from '../../components/EmptyState/EmptyState';
+import { IconUsers } from '../../icons';
+import { Wrapper, List } from './style';
 
 export const Tenants = () => {
   const { tenants, isLoading, error } = useTenants();
@@ -7,15 +10,25 @@ export const Tenants = () => {
   if (isLoading) return <Wrapper>Загрузка...</Wrapper>;
   if (error) return <Wrapper>Ошибка: {error}</Wrapper>;
 
+  if (tenants.length === 0) {
+    return (
+      <Wrapper>
+        <EmptyState
+          icon={<IconUsers />}
+          title="Жильцов пока нет"
+          description="Как только появятся арендаторы, здесь будет список карточек с их данными."
+        />
+      </Wrapper>
+    );
+  }
+
   return (
     <Wrapper>
-      {tenants.map((tenant) => (
-        <div key={tenant.id}>
-          <p>{tenant.full_name} — {tenant.status}</p>
-          <p>{tenant.phone} · {tenant.email}</p>
-          <p>{tenant.budget.toLocaleString('ru-RU')} ₽ · {tenant.property_type}</p>
-        </div>
-      ))}
+      <List>
+        {tenants.map((tenant) => (
+          <TenantCard key={tenant.id} tenant={tenant} />
+        ))}
+      </List>
     </Wrapper>
   );
 };
