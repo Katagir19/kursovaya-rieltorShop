@@ -7,10 +7,9 @@ from datetime import date
 
 app = FastAPI(title="Realtor API")
 
-# Настройка CORS, чтобы React (localhost:3000 / 5173) мог делать запросы
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # В продакшене указывайте конкретный URL фронтенда
+    allow_origins=["*"],  # В продакшене указывайте конкретный URL фронтенда  Посмтореть!
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -27,7 +26,6 @@ def get_db_connection():
     )
 
 
-# Схема валидации данных для создания жильца
 class TenantCreate(BaseModel):
     full_name: str
     phone: str
@@ -39,11 +37,12 @@ class TenantCreate(BaseModel):
     notes: Optional[str] = None
 
 class ApartmantCreate(BaseModel):
+    title: str
     address: str
     rooms: str
     price: float
     status: Optional[str] = "Свободна"
-    tenant_id: str
+    tenant_id: Optional[int] = None
 
 # Эндпоинт: Получить список всех жильцов
 @app.get("/api/tenants")
@@ -124,8 +123,8 @@ def delete_tenant(tenant_id: int):
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
 
-#Эндпоинт: Получить список всех жильцов апартамент
-@app.post("/api/apartaments")
+#Эндпоинт: Получить список всех апартамент
+@app.get("/api/apartments")
 def get_apartaments():
     try:
         conn = get_db_connection()
@@ -152,7 +151,7 @@ def get_apartaments():
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
 
 # Эндпоинт: Добавить новые аппартаменты
-@app.post("/api/apartaments")
+@app.post("/api/apartments")
 def create_apartament(apartament: ApartmantCreate):
     try:
         conn = get_db_connection()
@@ -162,6 +161,7 @@ def create_apartament(apartament: ApartmantCreate):
             VALUES (%s, %s, %s, %s, %s, %s)
         """
         values = (
+            apartament.title,
             apartament.address,
             apartament.rooms,
             apartament.price,
@@ -178,7 +178,7 @@ def create_apartament(apartament: ApartmantCreate):
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
 
 # Эндпоинт: Удалить аппартаменты из БД по ID
-@app.delete("/api/apartaments/{apartament_id}")
+@app.delete("/api/apartments/{apartament_id}")
 def delete_apartament(apartament_id: int):
     try:
         conn = get_db_connection()
