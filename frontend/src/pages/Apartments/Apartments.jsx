@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useApartaments } from '../../shared/modules/useApartaments/useApartaments';
 import { ApartmentCard } from './ApartmentCard/ApartmentCard';
-// import { AddApartmentModal } from '../../shared/modules/addApartmentModal/addApartmentModal';
 import { EmptyState } from '../../components/EmptyState/EmptyState';
 import { IconBuilding } from '../../icons';
 import { Wrapper, List, HeaderBar, Title, AddButton } from './style';
+import { AddApartmentModal } from '../../shared/modules/addApartmentModal/addApartmentModal';
 
 export const Apartments = () => {
   const { apartaments, isLoading, error, addApartament, deleteApartament } = useApartaments();
@@ -40,11 +40,11 @@ export const Apartments = () => {
         </List>
       )}
 
-      {/* <AddApartmentModal
+      <AddApartmentModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSubmit={addApartament}
-      /> */}
+      />
     </Wrapper>
   );
 };

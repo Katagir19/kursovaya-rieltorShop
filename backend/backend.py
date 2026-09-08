@@ -185,7 +185,7 @@ def delete_apartament(apartament_id: int):
         cursor = conn.cursor()
         
         # Проверяем, существует ли апартаменты с таким ID
-        cursor.execute("SELECT id FROM apartaments WHERE id = %s", (apartament_id,))
+        cursor.execute("SELECT id FROM apartments WHERE id = %s", (apartament_id,))
         tenant = cursor.fetchone()
         
         if not tenant:
@@ -194,7 +194,7 @@ def delete_apartament(apartament_id: int):
             raise HTTPException(status_code=404, detail="Апартаменты не найдены в базе данных")
             
         # Удаляем запись из MySQL
-        cursor.execute("DELETE FROM apartaments WHERE id = %s", (apartament_id,))
+        cursor.execute("DELETE FROM apartments WHERE id = %s", (apartament_id,))
         conn.commit()
         
         cursor.close()

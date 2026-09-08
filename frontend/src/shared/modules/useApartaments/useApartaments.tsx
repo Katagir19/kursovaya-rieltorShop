@@ -59,10 +59,15 @@ export const useApartaments = () => {
 
   const addApartament = async (apartamentData: CreateApartamentsInput) => {
   try {
+    const payload = {
+      ...apartamentData,
+      tenant_id: apartamentData.tenant_id ? Number(apartamentData.tenant_id) : null,
+    };
+
     const response = await fetch(API_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(apartamentData),
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -78,7 +83,7 @@ export const useApartaments = () => {
       rooms: resJson.email || apartamentData.rooms || '',
       price: Number(resJson.budget ?? apartamentData.price ?? 0),
       status: resJson.move_in_date || apartamentData.status || '',
-      tenant_id: resJson.notes || apartamentData.tenant_id || '',
+      tenant_id: payload.tenant_id ? String(payload.tenant_id) : '',
       created_at: resJson.created_at || new Date().toISOString(),
     };
 
