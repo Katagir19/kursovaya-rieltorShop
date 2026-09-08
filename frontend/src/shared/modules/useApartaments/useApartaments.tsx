@@ -13,7 +13,7 @@ export interface Apartaments {
 
 export type CreateApartamentsInput = Omit<Apartaments, 'id' | 'created_at'>;
 
-const API_URL = 'http://127.0.0.1:8000/api/apartaments';
+const API_URL = 'http://127.0.0.1:8000/api/apartments';
 
 export const useApartaments = () => {
   const [apartaments, setApartaments] = useState<Apartaments[]>([]);
@@ -34,11 +34,11 @@ export const useApartaments = () => {
         const newApartaments: Apartaments[] = data.map((item: any) => ({
           title: item.title,
           id: item.id,
-          adress: item.full_name,
-          rooms: item.email,
-          price: Number(item.budget || 0),
-          status: item.move_in_date,
-          tenant_id: item.notes,
+          address: item.address,           
+          rooms: item.rooms,               
+          price: Number(item.price || 0),  
+          status: item.status,             
+          tenant_id: item.tenant_id || '', 
           created_at: item.created_at,
         }));
 
