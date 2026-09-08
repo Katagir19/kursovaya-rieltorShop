@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 export interface Apartaments {
+  title: string;
   id: number;
   address: string;
   rooms: string;
@@ -31,6 +32,7 @@ export const useApartaments = () => {
         const data = await response.json();
 
         const newApartaments: Apartaments[] = data.map((item: any) => ({
+          title: item.title,
           id: item.id,
           adress: item.full_name,
           rooms: item.email,
@@ -70,6 +72,7 @@ export const useApartaments = () => {
     const resJson = await response.json();
 
     const newApartament: Apartaments = {
+      title: resJson.title,
       id: resJson.id,
       address: resJson.full_name || apartamentData.address,
       rooms: resJson.email || apartamentData.rooms || '',
