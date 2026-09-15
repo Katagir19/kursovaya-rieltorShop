@@ -4,6 +4,8 @@ from pydantic import BaseModel
 import mysql.connector
 from typing import Optional, List
 from datetime import date
+import statistics
+from collections import defaultdict
 
 app = FastAPI(title="Realtor API")
 
@@ -120,6 +122,46 @@ def delete_tenant(tenant_id: int):
         conn.close()
         
         return {"message": "Жилец успешно удален", "id": tenant_id}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=f"Database error: {err}")
+
+
+@app.get("/api/apartments/price-stats")
+def get_price_stats():
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        # Берём все квартиры, независимо от статуса — если нужны только свободные,
+        # добавьте: WHERE status = 'Свободна'
+        cursor.execute("SELECT rooms, price FROM apartments")
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+        groups: dict[str, list[float]] = defaultdict(list)
+        for r in rows:
+            groups[str(r["rooms"])].append(float(r["price"]))
+
+        result = []
+        for label, prices in groups.items():
+            prices.sort()
+            result.append({
+                "label": label,
+                "median_price": statistics.median(prices),
+                "min_price": min(prices),
+                "max_price": max(prices),
+                "count": len(prices),
+            })
+
+        # Сортировка: числовые значения комнат по возрастанию, остальное — по алфавиту
+        def sort_key(item):
+            try:
+                return (0, float(item["label"]))
+            except ValueError:
+                return (1, item["label"])
+        result.sort(key=sort_key)
+
+        return {"groups": result}
     except mysql.connector.Error as err:
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
 
