@@ -1,15 +1,37 @@
 import { EmptyState } from '../../components/EmptyState/EmptyState';
 import { IconReceipt } from '../../icons';
-import { Wrapper } from './style';
+import { usePayments } from '../../shared/modules/usePayments';
+import { PaymentCard } from './PaymentCard/PaymentCard';
+import { Wrapper, List, HeaderBar, Title } from './style';
 
 export const Payments = () => {
+  const { payments, isLoading, error } = usePayments();
+
+  if (isLoading) return <Wrapper>Загрузка платежей...</Wrapper>;
+  if (error) return <Wrapper>Ошибка загрузки: {error}</Wrapper>;
+
   return (
     <Wrapper>
-      <EmptyState
-        icon={<IconReceipt />}
-        title="Платежей пока нет"
-        description="Здесь будет история начислений и оплат по каждому жильцу — с датой, суммой и статусом (оплачено, ожидается, просрочено)."
-      />
+      <HeaderBar>
+        <Title>Платежи</Title>
+      </HeaderBar>
+
+      {payments.length === 0 ? (
+        <EmptyState
+          icon={<IconReceipt />}
+          title="Активных платежей нет"
+          description="Платежи отображаются автоматически для квартир, у которых есть привязанный жилец."
+        />
+      ) : (
+        <List>
+          {payments.map((payment) => (
+            <PaymentCard 
+              key={payment.id} 
+              payment={payment} 
+            />
+          ))}
+        </List>
+      )}
     </Wrapper>
   );
 };
