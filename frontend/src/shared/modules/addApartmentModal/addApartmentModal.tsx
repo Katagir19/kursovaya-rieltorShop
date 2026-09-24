@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import type { CreateApartamentsInput } from '../../../shared/modules/useApartaments/useApartaments';
+import { useTenants } from '../useTenant/useTenants';
 import {
   Overlay,
   Modal,
@@ -17,6 +18,8 @@ interface Props {
 }
 
 export const AddApartmentModal = ({ isOpen, onClose, onSubmit }: Props) => {
+  const { tenants, isLoading: isTenantsLoading } = useTenants();
+
   const [formData, setFormData] = useState<CreateApartamentsInput>({
     title: '',
     address: '',
@@ -32,10 +35,20 @@ export const AddApartmentModal = ({ isOpen, onClose, onSubmit }: Props) => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === 'price' ? Number(value) : value,
-    }));
+
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]: name === 'price' ? Number(value) : value,
+      };
+
+      // Если квартира становится свободной — очищаем ID жильца
+      if (name === 'status' && value === 'Свободна') {
+        updated.tenant_id = '';
+      }
+
+      return updated;
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -116,6 +129,27 @@ export const AddApartmentModal = ({ isOpen, onClose, onSubmit }: Props) => {
               <option value="Занята">Занята</option>
             </select>
           </FormGroup>
+
+          {formData.status === 'Занята' && (
+            <FormGroup>
+              <label>Жилец</label>
+              <select
+                required
+                name="tenant_id"
+                value={formData.tenant_id}
+                onChange={handleChange}
+              >
+                <option value="" disabled>
+                  {isTenantsLoading ? 'Загрузка жильцов...' : 'Выберите жильца'}
+                </option>
+                {tenants.map((tenant) => (
+                  <option key={tenant.id} value={tenant.id}>
+                    {tenant.full_name} ({tenant.phone})
+                  </option>
+                ))}
+              </select>
+            </FormGroup>
+          )}
 
           <Actions>
             <SecondaryButton type="button" onClick={onClose}>
