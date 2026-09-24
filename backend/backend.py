@@ -1,3 +1,4 @@
+import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -64,6 +65,7 @@ def get_tenants():
 
         return tenants
     except mysql.connector.Error as err:
+        print(err)
         raise HTTPException(status_code=500, detail=f"Database error: {err}")
 
 
