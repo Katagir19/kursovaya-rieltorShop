@@ -57,7 +57,7 @@ export const useApartaments = () => {
     };
   }, []);
 
-  const addApartament = async (apartamentData: CreateApartamentsInput) => {
+const addApartament = async (apartamentData: CreateApartamentsInput) => {
   try {
     const payload = {
       ...apartamentData,
@@ -77,12 +77,12 @@ export const useApartaments = () => {
     const resJson = await response.json();
 
     const newApartament: Apartaments = {
-      title: resJson.title,
       id: resJson.id,
-      address: resJson.full_name || apartamentData.address,
-      rooms: resJson.email || apartamentData.rooms || '',
-      price: Number(resJson.budget ?? apartamentData.price ?? 0),
-      status: resJson.move_in_date || apartamentData.status || '',
+      title: resJson.title || apartamentData.title,
+      address: resJson.address || apartamentData.address,
+      rooms: resJson.rooms || apartamentData.rooms,
+      price: Number(resJson.price ?? apartamentData.price ?? 0),
+      status: resJson.status || apartamentData.status,
       tenant_id: payload.tenant_id ? String(payload.tenant_id) : '',
       created_at: resJson.created_at || new Date().toISOString(),
     };
