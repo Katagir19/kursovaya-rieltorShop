@@ -15,6 +15,19 @@ export type CreateApartamentsInput = Omit<Apartaments, 'id' | 'created_at'>;
 
 const API_URL = 'http://127.0.0.1:8000/api/apartments';
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token && token !== 'undefined' && token !== 'null') {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  return headers;
+};
+
 export const useApartaments = () => {
   const [apartaments, setApartaments] = useState<Apartaments[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +38,9 @@ export const useApartaments = () => {
 
     const fetchApartamentInfo = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+          headers: getAuthHeaders()
+        });
         if (!response.ok) {
           throw new Error(`Error status: ${response.status}`);
         }
@@ -57,48 +72,49 @@ export const useApartaments = () => {
     };
   }, []);
 
-const addApartament = async (apartamentData: CreateApartamentsInput) => {
-  try {
-    const payload = {
-      ...apartamentData,
-      tenant_id: apartamentData.tenant_id ? Number(apartamentData.tenant_id) : null,
-    };
+  const addApartament = async (apartamentData: CreateApartamentsInput) => {
+    try {
+      const payload = {
+        ...apartamentData,
+        tenant_id: apartamentData.tenant_id ? Number(apartamentData.tenant_id) : null,
+      };
 
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Не удалось добавить апартаменты (код ${response.status})`);
+      if (!response.ok) {
+        throw new Error(`Не удалось добавить апартаменты (код ${response.status})`);
+      }
+
+      const resJson = await response.json();
+
+      const newApartament: Apartaments = {
+        id: resJson.id,
+        title: apartamentData.title,
+        address: apartamentData.address,
+        rooms: apartamentData.rooms,
+        price: Number(apartamentData.price || 0),
+        status: apartamentData.status,
+        tenant_id: payload.tenant_id ? String(payload.tenant_id) : '',
+        created_at: new Date().toISOString(),
+      };
+
+      setApartaments((prev) => [newApartament, ...prev]);
+    } catch (err: any) {
+      console.error('Ошибка при добавлении:', err);
+      setError(err.message);
+      throw err;
     }
-
-    const resJson = await response.json();
-
-    const newApartament: Apartaments = {
-      id: resJson.id,
-      title: resJson.title || apartamentData.title,
-      address: resJson.address || apartamentData.address,
-      rooms: resJson.rooms || apartamentData.rooms,
-      price: Number(resJson.price ?? apartamentData.price ?? 0),
-      status: resJson.status || apartamentData.status,
-      tenant_id: payload.tenant_id ? String(payload.tenant_id) : '',
-      created_at: resJson.created_at || new Date().toISOString(),
-    };
-
-    setApartaments((prev) => [newApartament, ...prev]);
-  } catch (err: any) {
-    console.error('Ошибка при добавлении:', err);
-    setError(err.message);
-    throw err;
-  }
-};
+  };
 
   const deleteApartament = async (id: number) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeaders(),
       });
 
       if (!response.ok) {
