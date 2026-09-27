@@ -1,5 +1,15 @@
+import React, { useState } from 'react';
 import { PaymentStatusToggle } from '../PaymentStatusToggle/PaymentStatusToggle';
-import { AmountBox, Row, InputWrapper, Input, Symbol, StatusMessage } from './style';
+import {
+  AmountBox,
+  Row,
+  InputWrapper,
+  Input,
+  Symbol,
+  AddButton,
+  StatusMessage,
+  ResetLink,
+} from './style';
 
 interface PaymentAmountInputProps {
   totalPrice: number;
@@ -12,17 +22,39 @@ export const PaymentAmountInput = ({
   paidAmount,
   onChangePaidAmount,
 }: PaymentAmountInputProps) => {
-  const remaining = totalPrice - paidAmount;
+  // Значение, которое юзер печатает прямо сейчас в инпуте
+  const [inputValue, setInputValue] = useState<string>('');
+
+  const remaining = Math.max(0, totalPrice - paidAmount);
   const isFullyPaid = paidAmount >= totalPrice;
 
+  // Обработка переключателя Оплачено / Не оплачено
   const handleToggle = (isPaid: boolean) => {
-    onChangePaidAmount(isPaid ? totalPrice : 0);
+    if (isPaid) {
+      onChangePaidAmount(totalPrice);
+    } else {
+      onChangePaidAmount(0);
+    }
+    setInputValue('');
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = Number(e.target.value);
-    if (Number.isNaN(val)) return;
-    onChangePaidAmount(val);
+  // Логика внесения суммы по Enter или кнопке
+  const handleAddPayment = () => {
+    const val = Number(inputValue);
+    if (Number.isNaN(val) || val <= 0) return;
+
+    // Прибавляем введенную сумму к уже внесенной (не превышая общую цену)
+    const updatedPaid = Math.min(totalPrice, paidAmount + val);
+    onChangePaidAmount(updatedPaid);
+    setInputValue(''); // Очищаем инпут после внесения
+  };
+
+  // Слушаем нажатие Enter
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleAddPayment();
+    }
   };
 
   return (
@@ -33,25 +65,34 @@ export const PaymentAmountInput = ({
         <InputWrapper>
           <Input
             type="number"
-            placeholder="0"
-            value={paidAmount || ''}
-            onChange={handleInputChange}
-            min={0}
-            max={totalPrice}
+            placeholder="Внести..."
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            onKeyDown={handleKeyDown}
+            min={1}
+            max={remaining}
           />
-          <Symbol>₽ внесено</Symbol>
+          <Symbol>₽</Symbol>
+          <AddButton
+            type="button"
+            onClick={handleAddPayment}
+            disabled={!inputValue || Number(inputValue) <= 0}
+            title="Нажмите Enter для внесения платежа"
+          >
+            ↵
+          </AddButton>
         </InputWrapper>
       </Row>
 
-      {/* Вывод инфо-сообщения */}
+      {/* Вывод информационного блока */}
       {isFullyPaid ? (
         <StatusMessage type="success">
-          <span>✓ Оплачено полностью</span>
-          <span>{totalPrice.toLocaleString('ru-RU')} ₽</span>
+          <span>✓ Оплачено полностью ({totalPrice.toLocaleString('ru-RU')} ₽)</span>
+          <ResetLink onClick={() => onChangePaidAmount(0)}>Сбросить</ResetLink>
         </StatusMessage>
       ) : remaining > 0 && paidAmount > 0 ? (
         <StatusMessage type="warning">
-          <span>Частичная оплата</span>
+          <span>Внесено: {paidAmount.toLocaleString('ru-RU')} ₽</span>
           <span>Осталось еще {remaining.toLocaleString('ru-RU')} ₽</span>
         </StatusMessage>
       ) : (

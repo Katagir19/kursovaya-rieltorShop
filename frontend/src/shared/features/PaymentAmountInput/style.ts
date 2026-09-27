@@ -26,7 +26,7 @@ export const InputWrapper = styled.div`
   background: ${theme.colors.surface};
   border: 1px solid ${theme.colors.hairline};
   border-radius: 6px;
-  padding: 4px 10px;
+  padding: 3px 6px 3px 10px;
 
   &:focus-within {
     border-color: ${theme.colors.accent};
@@ -39,7 +39,7 @@ export const Input = styled.input`
   background: transparent;
   font-family: ${theme.font.mono};
   font-size: 13px;
-  width: 90px;
+  width: 100px;
   color: ${theme.colors.textPrimary};
 
   &::-webkit-inner-spin-button,
@@ -52,6 +52,29 @@ export const Input = styled.input`
 export const Symbol = styled.span`
   font-size: 12px;
   color: ${theme.colors.textSecondary};
+`;
+
+export const AddButton = styled.button`
+  border: none;
+  background: ${theme.colors.accent || '#1a1a1a'};
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
 `;
 
 export const StatusMessage = styled.div<{ type: 'success' | 'warning' | 'danger' }>`
@@ -70,4 +93,18 @@ export const StatusMessage = styled.div<{ type: 'success' | 'warning' | 'danger'
       : 'rgba(211, 47, 47, 0.1)'};
   color: ${({ type }) =>
     type === 'success' ? '#2e7d32' : type === 'warning' ? '#c75100' : '#d32f2f'};
+`;
+
+export const ResetLink = styled.button`
+  background: none;
+  border: none;
+  color: #6b7280;
+  font-size: 11px;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    color: #d32f2f;
+  }
 `;

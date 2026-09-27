@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import type { Payment } from '../../../shared/modules/usePayments';
 import { PaymentAmountInput } from '../../../shared/features/PaymentAmountInput/PaymentAmountInput';
+import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage'; 
+import type { Payment } from '../../../shared/modules/usePayments';
 import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../icons';
 import {
   Card,
@@ -25,8 +25,10 @@ interface PaymentCardProps {
 }
 
 export const PaymentCard = ({ payment }: PaymentCardProps) => {
-  // Храним внесенную сумму локально (или получаем из payment.paid_amount)
-  const [paidAmount, setPaidAmount] = useState<number>(payment.paid_amount || 0);
+  const [paidAmount, setPaidAmount] = usePaymentStorage(
+    payment.id,
+    payment.paid_amount || 0
+  );
 
   return (
     <Card>
@@ -77,7 +79,7 @@ export const PaymentCard = ({ payment }: PaymentCardProps) => {
         </InfoRow>
       </InfoGrid>
 
-      {/* Модуль ввода суммы и тогла */}
+      {/* Компонент ввода суммы */}
       <PaymentAmountInput
         totalPrice={payment.price}
         paidAmount={paidAmount}

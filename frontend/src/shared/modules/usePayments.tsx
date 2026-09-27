@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useApartaments } from './useApartaments/useApartaments';
-import { useTenants } from './useTenant/useTenants'; // проверьте правильность пути к хуку
+import { useTenants } from './useTenant/useTenants'; 
 
 export interface Payment {
   id: number;               // ID квартиры/платежа
