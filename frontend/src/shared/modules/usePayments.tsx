@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useApartaments } from './useApartaments/useApartaments';
-import { useTenants } from './useTenant/useTenants'; // проверьте правильность пути к хуку
+import { useTenants } from './useTenant/useTenants'; 
 
 export interface Payment {
   id: number;               // ID квартиры/платежа
@@ -14,6 +14,7 @@ export interface Payment {
   tenant_email: string;
   created_at: string;       // Дата заселения / создания
   due_date: string;         // Срок истечения платежа (создание + 1 месяц)
+  paid_amount?: number;
 }
 
 export const usePayments = () => {

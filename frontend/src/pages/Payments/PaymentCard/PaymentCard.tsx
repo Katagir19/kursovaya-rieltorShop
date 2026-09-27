@@ -1,3 +1,5 @@
+import { PaymentAmountInput } from '../../../shared/features/PaymentAmountInput/PaymentAmountInput';
+import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage'; 
 import type { Payment } from '../../../shared/modules/usePayments';
 import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../icons';
 import {
@@ -23,6 +25,11 @@ interface PaymentCardProps {
 }
 
 export const PaymentCard = ({ payment }: PaymentCardProps) => {
+  const [paidAmount, setPaidAmount] = usePaymentStorage(
+    payment.id,
+    payment.paid_amount || 0
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -71,6 +78,13 @@ export const PaymentCard = ({ payment }: PaymentCardProps) => {
           </InfoText>
         </InfoRow>
       </InfoGrid>
+
+      {/* Компонент ввода суммы */}
+      <PaymentAmountInput
+        totalPrice={payment.price}
+        paidAmount={paidAmount}
+        onChangePaidAmount={setPaidAmount}
+      />
     </Card>
   );
 };
