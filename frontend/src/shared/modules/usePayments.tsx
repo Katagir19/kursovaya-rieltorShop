@@ -14,6 +14,7 @@ export interface Payment {
   tenant_email: string;
   created_at: string;       // Дата заселения / создания
   due_date: string;         // Срок истечения платежа (создание + 1 месяц)
+  paid_amount?: number;
 }
 
 export const usePayments = () => {
