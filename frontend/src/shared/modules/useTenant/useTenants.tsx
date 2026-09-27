@@ -17,6 +17,19 @@ export type CreateTenantInput = Omit<Tenant, 'id' | 'created_at'>;
 
 const API_URL = 'http://127.0.0.1:8000/api/tenants';
 
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+  
+  if (token && token !== 'undefined' && token !== 'null') {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  
+  return headers;
+};
+
 export const useTenants = () => {
   const [tenants, setTenants] = useState<Tenant[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +40,9 @@ export const useTenants = () => {
 
     const fetchTenantInfo = async () => {
       try {
-        const response = await fetch(API_URL);
+        const response = await fetch(API_URL, {
+          headers: getAuthHeaders()
+        });
         if (!response.ok) {
           throw new Error(`Error status: ${response.status}`);
         }
@@ -62,44 +77,45 @@ export const useTenants = () => {
   }, []);
 
   const addTenant = async (tenantData: CreateTenantInput) => {
-  try {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tenantData),
-    });
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: getAuthHeaders(),
+        body: JSON.stringify(tenantData),
+      });
 
-    if (!response.ok) {
-      throw new Error(`Не удалось добавить жильца (код ${response.status})`);
+      if (!response.ok) {
+        throw new Error(`Не удалось добавить жильца (код ${response.status})`);
+      }
+
+      const resJson = await response.json();
+
+      const newTenant: Tenant = {
+        id: resJson.id,
+        full_name: tenantData.full_name,
+        email: tenantData.email || '',
+        budget: Number(tenantData.budget || 0),
+        move_in_date: tenantData.move_in_date || '',
+        notes: tenantData.notes || '',
+        phone: tenantData.phone || '',
+        property_type: tenantData.property_type || '',
+        created_at: new Date().toISOString(),
+        status: tenantData.status || 'В поиске',
+      };
+
+      setTenants((prev) => [newTenant, ...prev]);
+    } catch (err: any) {
+      console.error('Ошибка при добавлении:', err);
+      setError(err.message);
+      throw err;
     }
-
-    const resJson = await response.json();
-
-    const newTenant: Tenant = {
-      id: resJson.id,
-      full_name: resJson.full_name || tenantData.full_name,
-      email: resJson.email || tenantData.email || '',
-      budget: Number(resJson.budget ?? tenantData.budget ?? 0),
-      move_in_date: resJson.move_in_date || tenantData.move_in_date || '',
-      notes: resJson.notes || tenantData.notes || '',
-      phone: resJson.phone || tenantData.phone || '',
-      property_type: resJson.property_type || tenantData.property_type || '',
-      created_at: resJson.created_at || new Date().toISOString(),
-      status: resJson.status || tenantData.status || 'В поиске',
-    };
-
-    setTenants((prev) => [newTenant, ...prev]);
-  } catch (err: any) {
-    console.error('Ошибка при добавлении:', err);
-    setError(err.message);
-    throw err;
-  }
-};
+  };
 
   const deleteTenant = async (id: number) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
         method: 'DELETE',
+        headers: getAuthHeaders(),
       });
 
       if (!response.ok) {
