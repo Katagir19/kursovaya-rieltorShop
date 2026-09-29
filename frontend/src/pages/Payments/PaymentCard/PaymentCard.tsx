@@ -1,7 +1,7 @@
 import { PaymentAmountInput } from '../../../shared/features/PaymentAmountInput/PaymentAmountInput';
-import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage'; 
-import type { Payment } from '../../../shared/modules/usePayments';
-import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../icons';
+import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage/usePaymentStorage'; 
+import type { Payment } from '../../../shared/hooks/usePayments/usePayments';
+import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../shared/icons/icons';
 import {
   Card,
   CardHeader,

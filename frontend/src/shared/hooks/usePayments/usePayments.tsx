@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useApartaments } from './useApartaments/useApartaments';
-import { useTenants } from './useTenant/useTenants'; 
+import { useApartaments } from '../useApartaments/useApartaments';
+import { useTenants } from '../useTenants/useTenants'; 
 
 export interface Payment {
   id: number;               // ID квартиры/платежа

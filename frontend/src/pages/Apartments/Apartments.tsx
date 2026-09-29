@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react';
-import { useApartaments } from '../../shared/modules/useApartaments/useApartaments';
+import { useApartaments } from '../../shared/hooks/useApartaments/useApartaments';
 import { ApartmentCard } from './ApartmentCard/ApartmentCard';
 import { EmptyState } from '../../components/EmptyState/EmptyState';
 import { FilterBar, StatusOption } from '../../components/FilterBar';
-import { IconBuilding } from '../../icons';
+import { IconBuilding } from '../../shared/icons/icons';
 import { Wrapper, List, HeaderBar, Title, AddButton } from './style';
-import { AddApartmentModal } from '../../shared/modules/addApartmentModal/addApartmentModal';
+import { AddApartmentModal } from './addApartmentModal/addApartmentModal';
 
 const APARTMENT_STATUS_OPTIONS: StatusOption[] = [
   { label: 'Все статусы', value: 'all' },
