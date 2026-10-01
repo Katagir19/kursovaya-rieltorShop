@@ -61,7 +61,7 @@ export const PaymentCard = ({ payment }: PaymentCardProps) => {
 
         <InfoRow>
           <IconSlot><IconBuilding /></IconSlot>
-          <InfoText>ID жильца: {payment.tenant_id}</InfoText>
+          <InfoText>Арендатор: {payment.tenant_name}</InfoText>
         </InfoRow>
 
         <InfoRow>

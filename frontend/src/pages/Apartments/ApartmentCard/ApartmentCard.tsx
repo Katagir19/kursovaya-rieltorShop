@@ -26,10 +26,11 @@ const formatDate = (iso: string) => {
 
 interface ApartmentCardProps {
   apartment: Apartaments;
+  tenantName?: string;
   onDelete: (id: number) => void;
 }
 
-export const ApartmentCard = ({ apartment, onDelete }: ApartmentCardProps) => {
+export const ApartmentCard = ({ apartment, tenantName, onDelete }: ApartmentCardProps) => {
   const tone = STATUS_TONE[apartment.status] ?? 'neutral';
 
   // Безопасное приведение цены к числу
@@ -73,7 +74,7 @@ export const ApartmentCard = ({ apartment, onDelete }: ApartmentCardProps) => {
         {apartment.tenant_id && (
           <InfoRow>
             <IconSlot><IconUsers /></IconSlot>
-            <InfoText>Арендатор (ID): {apartment.tenant_id}</InfoText>
+            <InfoText>Арендатор: {tenantName}</InfoText>
           </InfoRow>
         )}
         {apartment.created_at && (
