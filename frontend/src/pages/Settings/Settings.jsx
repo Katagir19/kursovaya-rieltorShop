@@ -1,5 +1,5 @@
 import { EmptyState } from '../../components/EmptyState/EmptyState';
-import { IconSettings } from '../../icons';
+import { IconSettings } from '../../shared/icons/icons';
 import { Wrapper } from './style';
 
 export const Settings = () => {

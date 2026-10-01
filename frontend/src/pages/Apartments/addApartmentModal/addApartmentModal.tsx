@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import type { CreateApartamentsInput } from '../../../shared/modules/useApartaments/useApartaments';
-import { useTenants } from '../useTenant/useTenants';
+import type { CreateApartamentsInput } from '../../../shared/hooks/useApartaments/useApartaments';
+import { useTenants } from '../../../shared/hooks/useTenants/useTenants';
 import {
   Overlay,
   Modal,

@@ -15,7 +15,7 @@ import {
   IconUsers,
   IconReceipt,
   IconSettings,
-} from '../../icons';
+} from '../../shared/icons/icons';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Дашборд', icon: IconGrid, end: true },
