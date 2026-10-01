@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import type { CreateTenantInput } from '../../../shared/modules/useTenant/useTenants';
+import type { CreateTenantInput } from '../../../shared/hooks/useTenants/useTenants';
 import {
   Overlay,
   Modal,

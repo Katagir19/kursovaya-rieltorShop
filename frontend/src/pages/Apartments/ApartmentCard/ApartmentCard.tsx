@@ -1,5 +1,5 @@
-import type { Apartaments } from '../../../shared/modules/useApartaments/useApartaments';
-import { IconBuilding, IconWallet, IconCalendar, IconUsers } from '../../../icons';
+import type { Apartaments } from '../../../shared/hooks/useApartaments/useApartaments';
+import { IconBuilding, IconWallet, IconCalendar, IconUsers } from '../../../shared/icons/icons';
 import {
   Card,
   CardHeader,

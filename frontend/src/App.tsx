@@ -1,10 +1,10 @@
 import { Routes, Route } from 'react-router-dom';
-import { Layout } from './components/Layout/Layout';
-import { Dashboard } from './pages/Dashboard/Dashboard';
-import { Apartments } from './pages/Apartments/Apartments';
-import { Tenants } from './pages/Tenants/Tenants';
-import { Payments } from './pages/Payments/Payments';
-import { Settings } from './pages/Settings/Settings';
+import { Layout } from './components/Layout/Layout.jsx';
+import { Dashboard } from './pages/Dashboard/Dashboard.jsx';
+import { Apartments } from './pages/Apartments/Apartments.tsx';
+import { Tenants } from './pages/Tenants/Tenants.tsx';
+import { Payments } from './pages/Payments/Payments.jsx';
+import { Settings } from './pages/Settings/Settings.jsx';
 
 function App() {
   return (
