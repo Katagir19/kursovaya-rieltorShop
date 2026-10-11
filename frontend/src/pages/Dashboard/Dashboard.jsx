@@ -1,15 +1,18 @@
-import { EmptyState } from '../../components/EmptyState/EmptyState';
-import { IconGrid } from '../../shared/icons/icons';
-import { Wrapper } from './style';
+import { useApartaments } from '../../shared/hooks/useApartaments/useApartaments';
+import { MedianChart } from './MedianChart/MedianChart';
+import { Wrapper, Title, Subtitle, Message } from './style';
 
 export const Dashboard = () => {
+  const { apartaments, isLoading, error } = useApartaments();
+
   return (
     <Wrapper>
-      <EmptyState
-        icon={<IconGrid />}
-        title="Сводка пока пуста"
-        description="Здесь появится общая картина: количество объектов в управлении, свободные квартиры и ближайшие платежи."
-      />
+      <div>
+        <Title>Сводка</Title>
+        <Subtitle>Медиана аренды по моим квартирам в сравнении с объявлениями на Авито</Subtitle>
+      </div>
+      {error && <Message>Не удалось загрузить мои квартиры: {error}. На графике только данные Авито.</Message>}
+      {isLoading ? <Message>Загрузка...</Message> : <MedianChart apartaments={apartaments} />}
     </Wrapper>
   );
 };
