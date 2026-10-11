@@ -1,16 +1,91 @@
-# React + Vite
+# Kursovaya — Rieltor Shop
+ 
+Информационная система для арендодателей. Позволяет хранить и просматривать информацию о жильцах, апартаментах и платежах.
+ 
+> Курсовая работа. Проект разрабатывается и запускается локально.
+ 
+## Возможности
+ 
+- **Жильцы** — карточки жильцов со всей информацией о каждом из них
+- **Апартаменты** — список апартаментов, карточки с подробной информацией, добавление новых
+- **Платежи** — учёт платежей
+- **Dashboard** — сводная страница(в разработке)
+- **Settings** — настройки(в разработке)
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+## Технологии
+ 
+| Часть | Технологии |
+|-------|-----------|
+| Фронтенд | React, TypeScript, Vite |
+| Бэкенд | Python, FastAPI, Uvicorn |
+| База данных | MySQL (локально через XAMPP) |
+ 
+## Структура проекта
+ 
+```
+kursovaya-rieltorShop/
+├── backend/
+│   └── backend.py          # FastAPI-сервер
+└── frontend/               # React + TypeScript (Vite)
+    └── src/
+        ├── components/     # переиспользуемые компоненты
+        │   ├── EmptyState/
+        │   ├── FilterBar/
+        │   ├── Header/
+        │   ├── Layout/
+        │   └── Sidebar/
+        ├── pages/          # страницы приложения
+        │   ├── Apartments/
+        │   ├── Dashboard/
+        │   ├── Payments/
+        │   ├── Settings/
+        │   └── Tenants/
+        ├── shared/         # общий код
+        │   ├── features/
+        │   ├── hooks/
+        │   ├── icons/
+        │   ├── services/
+        │   └── types/
+        ├── App.tsx
+        ├── main.jsx
+        ├── index.css
+        └── theme.ts
+```
+ 
+## Требования
+ 
+- [Node.js](https://nodejs.org/) 
+- [Python 3](https://www.python.org/) 
+- [XAMPP](https://www.apachefriends.org/) (MySQL)
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+## Установка и запуск
+ 
+### 1. База данных
+ 
+1. Запустите **XAMPP Control Panel** и включите модули **Apache** и **MySQL**.
+2. Откройте phpMyAdmin: <http://localhost/phpmyadmin>.
+3. Создайте базу данных (realtor_db: название БД).
+### 2. Бэкенд
+ 
+```bash
+cd backend
+pip install -r requirements.txt   # проверить, что файл существует
+py -m uvicorn backend:app --reload
+```
+ 
+Сервер будет доступен по адресу <http://127.0.0.1:8000>.
+Интерактивная документация API (Swagger): <http://127.0.0.1:8000/docs>.
+ 
+### 3. Фронтенд
+ 
+```bash
+cd frontend
+npm install
+npm run dev
+```
+ 
+Приложение откроется по адресу, который выведет Vite (по умолчанию <http://localhost:5173>).
+ 
+## Статус
+ 
+Проект запускается только локально, деплоя пока нет.

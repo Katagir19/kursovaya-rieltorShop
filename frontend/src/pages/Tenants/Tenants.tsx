@@ -1,10 +1,10 @@
 import { useState, useMemo } from 'react';
-import { useTenants } from '../../shared/modules/useTenant/useTenants';
+import { useTenants } from '../../shared/hooks/useTenants/useTenants';
 import { TenantCard } from './TenantCard/TenantCard';
-import { AddTenantModal } from '../../shared/modules/addTenantModal/addTenantModal';
+import { AddTenantModal } from './addTenantModal/addTenantModal';
 import { EmptyState } from '../../components/EmptyState/EmptyState';
 import { FilterBar, StatusOption } from '../../components/FilterBar';
-import { IconUsers } from '../../icons';
+import { IconUsers } from '../../shared/icons/icons';
 import { Wrapper, List, HeaderBar, Title, AddButton } from './style';
 
 const TENANT_STATUS_OPTIONS: StatusOption[] = [

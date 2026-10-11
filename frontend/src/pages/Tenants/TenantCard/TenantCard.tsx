@@ -1,5 +1,5 @@
-import type { Tenant } from '../../../shared/modules/useTenant/useTenants';
-import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../icons';
+import type { Tenant } from '../../../shared/hooks/useTenants/useTenants';
+import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../shared/icons/icons';
 import {
   Card,
   CardHeader,

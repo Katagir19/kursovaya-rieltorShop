@@ -1,7 +1,7 @@
 import { PaymentAmountInput } from '../../../shared/features/PaymentAmountInput/PaymentAmountInput';
-import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage'; 
-import type { Payment } from '../../../shared/modules/usePayments';
-import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../icons';
+import { usePaymentStorage } from '../../../shared/hooks/usePaymentStorage/usePaymentStorage'; 
+import type { Payment } from '../../../shared/types/payments';
+import { IconPhone, IconMail, IconWallet, IconCalendar, IconBuilding } from '../../../shared/icons/icons';
 import {
   Card,
   CardHeader,
@@ -61,7 +61,7 @@ export const PaymentCard = ({ payment }: PaymentCardProps) => {
 
         <InfoRow>
           <IconSlot><IconBuilding /></IconSlot>
-          <InfoText>ID жильца: {payment.tenant_id}</InfoText>
+          <InfoText>Арендатор: {payment.tenant_name}</InfoText>
         </InfoRow>
 
         <InfoRow>

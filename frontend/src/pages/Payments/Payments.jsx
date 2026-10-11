@@ -1,6 +1,6 @@
 import { EmptyState } from '../../components/EmptyState/EmptyState';
-import { IconReceipt } from '../../icons';
-import { usePayments } from '../../shared/modules/usePayments';
+import { IconReceipt } from '../../shared/icons/icons';
+import { usePayments } from '../../shared/hooks/usePayments/usePayments';
 import { PaymentCard } from './PaymentCard/PaymentCard';
 import { Wrapper, List, HeaderBar, Title } from './style';
 
