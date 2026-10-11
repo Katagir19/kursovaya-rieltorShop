@@ -30,6 +30,14 @@ const PAGE_META: Record<string, { title: string; subtitle: string }> = {
   '/settings': { title: 'Настройки', subtitle: 'Параметры аккаунта' },
 };
 
+const QUICK_USERS = [
+  { name: 'Агент Иванов', email: 'ivanov@example.com', password: 'Ivanov#2026' },
+  { name: 'Агент Петров', email: 'petrov@example.com', password: 'Petrov#2026' },
+  { name: 'Агент Сидорова', email: 'sidorova@example.com', password: 'Sidorova#2026' },
+  { name: 'Агент Кузнецов', email: 'kuznetsov@example.com', password: 'Kuznetsov#2026' },
+  { name: 'Агент Морозова', email: 'morozova@example.com', password: 'Morozova#2026' },
+];
+
 interface UserProfile {
   id: number;
   email: string;
@@ -141,20 +149,16 @@ export const Header = () => {
           {isDropdownOpen && (
             <Dropdown>
               <DropdownHeader>Быстрый выбор</DropdownHeader>
-              <DropdownItem
-                active={user?.email === 'ivanov@example.com'}
-                onClick={() => loginUser('ivanov@example.com', 'password123')}
-              >
-                <span>Агент Иванов</span>
-                {user?.email === 'ivanov@example.com' && '✓'}
-              </DropdownItem>
-              <DropdownItem
-                active={user?.email === 'petrov@example.com'}
-                onClick={() => loginUser('petrov@example.com', 'password123')}
-              >
-                <span>Агент Петров</span>
-                {user?.email === 'petrov@example.com' && '✓'}
-              </DropdownItem>
+              {QUICK_USERS.map((u) => (
+                <DropdownItem
+                  key={u.email}
+                  active={user?.email === u.email}
+                  onClick={() => loginUser(u.email, u.password)}
+                >
+                  <span>{u.name}</span>
+                  {user?.email === u.email && '✓'}
+                </DropdownItem>
+              ))}
 
               <DropdownDivider />
 

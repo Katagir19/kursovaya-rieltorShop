@@ -36,19 +36,12 @@ def get_db_connection():
 
 # --- Вспомогательные функции авторизации ---
 def verify_password(plain_password: str, hashed_password: str) -> bool:
-    # 1. Быстрый вход для тестовых пользователей с паролем 'password123'
-    if plain_password == "password123":
-        return True
-
-    # 2. Прямая проверка через bcrypt без участия passlib
     try:
         import bcrypt
-        # Обрезаем пароль до 72 байт, чтобы избежать ValueError из скриншота
         pwd_bytes = plain_password.encode('utf-8')[:72]
-        hash_bytes = hashed_password.encode('utf-8')
-        return bcrypt.checkpw(pwd_bytes, hash_bytes)
+        return bcrypt.checkpw(pwd_bytes, hashed_password.encode('utf-8'))
     except Exception:
-        return plain_password == hashed_password
+        return False
 
 def get_password_hash(password: str) -> str:
     import bcrypt

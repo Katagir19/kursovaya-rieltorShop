@@ -28,7 +28,7 @@ Database: MySQL via XAMPP (start Apache + MySQL), database `realtor_db`, user `r
 
 ## Architecture
 
-**Backend** is a single file, `backend/backend.py` (FastAPI). Each endpoint opens its own `mysql.connector` connection via `get_db_connection()` and uses raw SQL. Auth is JWT (HS256, 24h) via `HTTPBearer`; every data endpoint depends on `get_current_user` and scopes rows by `user_id`. Endpoints: `POST /api/auth/login`, `GET /api/auth/me`, and `GET/POST/DELETE` for `/api/tenants` and `/api/apartments`. There are no update (PUT/PATCH) endpoints and no payments table. Note `verify_password` accepts `password123` for any user (test backdoor).
+**Backend** is a single file, `backend/backend.py` (FastAPI). Each endpoint opens its own `mysql.connector` connection via `get_db_connection()` and uses raw SQL. Auth is JWT (HS256, 24h) via `HTTPBearer`; every data endpoint depends on `get_current_user` and scopes rows by `user_id`. Endpoints: `POST /api/auth/login`, `GET /api/auth/me`, and `GET/POST/DELETE` for `/api/tenants` and `/api/apartments`. There are no update (PUT/PATCH) endpoints and no payments table. `verify_password` is a strict bcrypt check (the `password123` backdoor was removed); the 5 agents and their passwords are created by `py seed_users.py` and listed in `QUICK_USERS` in `Header.tsx`.
 
 **Frontend** (`frontend/src`, React 19 + react-router 7 + Emotion, mixed `.jsx`/`.tsx`) follows a layered data flow:
 
